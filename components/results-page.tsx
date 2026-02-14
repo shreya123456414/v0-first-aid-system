@@ -30,6 +30,7 @@ import {
   Image as ImageIcon,
 } from "lucide-react"
 import Image from "next/image"
+import { AnimatedInjuryIcon } from "@/components/animated-injury-icons"
 
 interface ResultsPageProps {
   patient: PatientProfile
@@ -293,12 +294,26 @@ export function ResultsPage({
         </div>
       )}
 
-      {/* First Aid Image */}
+      {/* First Aid Image with Animated Icon */}
       <div className="rounded-xl border border-border bg-card p-4">
-        <h3 className="flex items-center gap-2 text-sm font-bold text-foreground">
-          <ImageIcon className="h-4 w-4 text-primary" />
-          Visual Guide
-        </h3>
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-12 shrink-0">
+            <AnimatedInjuryIcon
+              type={injury.injuryType}
+              active
+              className="h-12 w-12"
+            />
+          </div>
+          <div>
+            <h3 className="flex items-center gap-2 text-sm font-bold text-foreground">
+              <ImageIcon className="h-4 w-4 text-primary" />
+              Visual Guide - {INJURY_LABELS[injury.injuryType]}
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              Follow the illustrated steps below
+            </p>
+          </div>
+        </div>
         <div className="mt-3 overflow-hidden rounded-lg border border-border">
           <Image
             src={`/images/first-aid-${guidance.imageKey}.jpg`}

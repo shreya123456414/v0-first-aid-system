@@ -4,7 +4,13 @@ import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import type { SymptomData, PainLevel } from "@/lib/first-aid-types"
-import { Activity, Droplets, SwatchBook, Brain } from "lucide-react"
+import {
+  AnimatedPainIndicator,
+  AnimatedBleedingIndicator,
+  AnimatedSwellingIndicator,
+  AnimatedConsciousnessIndicator,
+} from "@/components/animated-symptom-visuals"
+import { Activity } from "lucide-react"
 
 interface SymptomsInputStepProps {
   data: SymptomData
@@ -63,13 +69,19 @@ export function SymptomsInputStep({ data, onChange }: SymptomsInputStepProps) {
               type="button"
               onClick={() => update("painLevel", level.value)}
               className={cn(
-                "flex flex-col items-center gap-1 rounded-xl border-2 p-4 text-center transition-all",
+                "flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all",
                 data.painLevel === level.value
                   ? level.color
                   : "border-border bg-card text-foreground hover:border-primary/30"
               )}
             >
-              <span className="text-lg font-bold">{level.label}</span>
+              <div className="h-10 w-10">
+                <AnimatedPainIndicator
+                  level={level.value}
+                  active={data.painLevel === level.value}
+                />
+              </div>
+              <span className="text-sm font-bold">{level.label}</span>
               <span className="text-xs opacity-80">{level.description}</span>
             </button>
           ))}
@@ -82,7 +94,9 @@ export function SymptomsInputStep({ data, onChange }: SymptomsInputStepProps) {
         <div className="grid gap-3 sm:grid-cols-3">
           <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
             <div className="flex items-center gap-3">
-              <Droplets className="h-5 w-5 text-destructive" />
+              <div className="h-8 w-8 shrink-0">
+                <AnimatedBleedingIndicator active={data.bleeding} />
+              </div>
               <div>
                 <p className="text-sm font-medium text-foreground">Bleeding</p>
                 <p className="text-xs text-muted-foreground">Active blood loss</p>
@@ -97,7 +111,9 @@ export function SymptomsInputStep({ data, onChange }: SymptomsInputStepProps) {
 
           <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
             <div className="flex items-center gap-3">
-              <SwatchBook className="h-5 w-5 text-severity-serious" />
+              <div className="h-8 w-8 shrink-0">
+                <AnimatedSwellingIndicator active={data.swelling} />
+              </div>
               <div>
                 <p className="text-sm font-medium text-foreground">Swelling</p>
                 <p className="text-xs text-muted-foreground">Visible swelling</p>
@@ -112,7 +128,9 @@ export function SymptomsInputStep({ data, onChange }: SymptomsInputStepProps) {
 
           <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
             <div className="flex items-center gap-3">
-              <Brain className="h-5 w-5 text-primary" />
+              <div className="h-8 w-8 shrink-0">
+                <AnimatedConsciousnessIndicator active={data.conscious} />
+              </div>
               <div>
                 <p className="text-sm font-medium text-foreground">Conscious</p>
                 <p className="text-xs text-muted-foreground">Alert and aware</p>

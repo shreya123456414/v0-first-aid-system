@@ -3,26 +3,8 @@
 import { cn } from "@/lib/utils"
 import type { InjuryType, InjuryData } from "@/lib/first-aid-types"
 import { INJURY_LABELS } from "@/lib/first-aid-types"
-import {
-  Scissors,
-  Flame,
-  Bone,
-  Bug,
-  Thermometer,
-  Apple,
-  Droplets,
-  Stethoscope,
-} from "lucide-react"
-
-const INJURY_ICON_MAP: Record<InjuryType, React.ReactNode> = {
-  cut_wound: <Scissors className="h-6 w-6" />,
-  burn: <Flame className="h-6 w-6" />,
-  fracture_sprain: <Bone className="h-6 w-6" />,
-  animal_bite: <Bug className="h-6 w-6" />,
-  fever: <Thermometer className="h-6 w-6" />,
-  food_poisoning: <Apple className="h-6 w-6" />,
-  nose_bleeding: <Droplets className="h-6 w-6" />,
-}
+import { AnimatedInjuryIcon } from "@/components/animated-injury-icons"
+import { Stethoscope } from "lucide-react"
 
 const INJURY_DESCRIPTIONS: Record<InjuryType, string> = {
   cut_wound: "Cuts, scrapes, lacerations, or open wounds",
@@ -76,13 +58,17 @@ export function InjurySelectionStep({
           >
             <div
               className={cn(
-                "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors",
+                "flex h-12 w-12 shrink-0 items-center justify-center rounded-lg transition-colors",
                 data.injuryType === type
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground"
+                  ? "bg-primary/5"
+                  : "bg-muted"
               )}
             >
-              {INJURY_ICON_MAP[type]}
+              <AnimatedInjuryIcon
+                type={type}
+                active={data.injuryType === type}
+                className="h-10 w-10"
+              />
             </div>
             <div className="min-w-0">
               <p className="font-medium text-foreground">
