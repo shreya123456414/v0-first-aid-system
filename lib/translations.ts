@@ -156,7 +156,7 @@ const EN: Translations = {
   },
 
   main: {
-    title: "First Aid Guide",
+    title: "Smart First Aid Recommendation System",
     subtitle: "Smart Emergency Assistance",
     description: "Step-by-step guidance for medical emergencies",
     startButton: "Start Assessment",
@@ -287,7 +287,7 @@ const HI: Translations = {
   },
 
   main: {
-    title: "प्राथमिक चिकित्सा गाइड",
+    title: "स्मार्ट प्राथमिक चिकित्सा सिफारिश प्रणाली",
     subtitle: "स्मार्ट आपातकालीन सहायता",
     description: "चिकित्सा आपातकाल के लिए चरण-दर-चरण मार्गदर्शन",
     startButton: "मूल्यांकन शुरू करें",
@@ -296,7 +296,7 @@ const HI: Translations = {
   steps: {
     patientProfile: "रोगी प्रोफाइल",
     injurySelection: "चोट का चयन",
-    symptomsInput: "लक्षण",
+    symptomsInput: "लक���षण",
     locationSelect: "स्थान",
   },
 

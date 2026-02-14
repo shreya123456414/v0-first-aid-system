@@ -6,7 +6,7 @@ import './globals.css'
 const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  title: 'First Aid Guide - Smart Emergency Assistance',
+  title: 'Smart First Aid Recommendation System - Emergency Assistance',
   description:
     'A smart first aid recommendation system designed to assist during medical emergencies with step-by-step guidance.',
 }
