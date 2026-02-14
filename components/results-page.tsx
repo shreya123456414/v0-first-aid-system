@@ -31,6 +31,15 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import { AnimatedInjuryIcon } from "@/components/animated-injury-icons"
+import {
+  HeadacheAnimation,
+  FeverAnimation,
+  NauseaAnimation,
+  DizzinessAnimation,
+  WeaknessAnimation,
+  DifficultyBreathingAnimation,
+  ChestPainAnimation,
+} from "@/components/animated-symptoms"
 
 interface ResultsPageProps {
   patient: PatientProfile
@@ -270,6 +279,56 @@ export function ResultsPage({
               </span>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Symptoms Visualization */}
+      <div className="rounded-xl border border-border bg-card p-4">
+        <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-4">
+          <AlertTriangle className="h-4 w-4 text-primary" />
+          Reported Symptoms
+        </h3>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {symptoms.painLevel && (
+            <div className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/30">
+              <div className="h-12 w-12">
+                <HeadacheAnimation active={true} />
+              </div>
+              <p className="text-xs text-center font-medium text-foreground capitalize">
+                Pain: {symptoms.painLevel}
+              </p>
+            </div>
+          )}
+          {symptoms.bleeding && (
+            <div className="flex flex-col items-center gap-2 p-3 rounded-lg bg-severity-emergency/10">
+              <div className="h-12 w-12">
+                <NauseaAnimation active={true} />
+              </div>
+              <p className="text-xs text-center font-medium text-severity-emergency">
+                Bleeding
+              </p>
+            </div>
+          )}
+          {symptoms.swelling && (
+            <div className="flex flex-col items-center gap-2 p-3 rounded-lg bg-severity-serious/10">
+              <div className="h-12 w-12">
+                <WeaknessAnimation active={true} />
+              </div>
+              <p className="text-xs text-center font-medium text-severity-serious">
+                Swelling
+              </p>
+            </div>
+          )}
+          {!symptoms.conscious && (
+            <div className="flex flex-col items-center gap-2 p-3 rounded-lg bg-severity-emergency/10">
+              <div className="h-12 w-12">
+                <DizzinessAnimation active={true} />
+              </div>
+              <p className="text-xs text-center font-medium text-severity-emergency">
+                Unconscious
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
