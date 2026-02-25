@@ -9,7 +9,6 @@ import { InjurySelectionStep } from "@/components/steps/injury-selection"
 import { SymptomsInputStep } from "@/components/steps/symptoms-input"
 import { LocationSelectStep } from "@/components/steps/location-select"
 import { ResultsPage } from "@/components/results-page"
-import { AIChatAssistant } from "@/components/ai-chat-assistant"
 import { generateGuidance } from "@/lib/first-aid-engine"
 import { useLanguage, LanguageProvider } from "@/lib/language-context"
 import type {
@@ -61,7 +60,6 @@ function FirstAidAppContent() {
   const [symptoms, setSymptoms] = useState<SymptomData>(DEFAULT_SYMPTOMS)
   const [location, setLocation] = useState<LocationData>(DEFAULT_LOCATION)
   const [guidance, setGuidance] = useState<FirstAidGuidance | null>(null)
-  const [showChat, setShowChat] = useState(false)
 
   const handleNext = useCallback(() => {
     if (step === 4) {
@@ -104,11 +102,11 @@ function FirstAidAppContent() {
   // Welcome screen
   if (step === 0) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
-        <div className="absolute top-4 right-4 flex items-center gap-2">
+      <main className="flex min-h-screen flex-col items-center justify-center px-4 py-8 safe-area-bottom">
+        <div className="absolute top-4 right-4 safe-area-top">
           <button
             onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
-            className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm hover:bg-muted"
+            className="touch-lg flex items-center gap-2 rounded-xl border-2 border-primary bg-primary/10 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/20 transition-colors"
             aria-label="Toggle language"
           >
             <Globe className="h-4 w-4" />
@@ -116,41 +114,41 @@ function FirstAidAppContent() {
           </button>
         </div>
         <div className="mx-auto w-full max-w-lg text-center">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/25">
-            <Cross className="h-10 w-10 text-primary-foreground" />
+          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-primary/80 shadow-xl shadow-primary/30">
+            <Cross className="h-12 w-12 text-primary-foreground" />
           </div>
-          <h1 className="mt-6 text-3xl font-bold tracking-tight text-foreground text-balance">
+          <h1 className="mt-8 text-4xl font-bold tracking-tight text-foreground text-balance">
             {t('main.title')}
           </h1>
-          <p className="mt-3 text-base text-muted-foreground leading-relaxed text-pretty">
+          <p className="mt-4 text-lg text-muted-foreground leading-relaxed text-pretty">
             {t('main.description')}
           </p>
 
-          <div className="mt-8 grid grid-cols-3 gap-4">
-            <div className="rounded-xl border border-border bg-card p-4">
-              <ShieldCheck className="mx-auto h-7 w-7 text-primary" />
-              <p className="mt-2 text-xs font-medium text-foreground">
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="card-elevated flex flex-col items-center border-0 bg-gradient-to-b from-severity-mild/20 to-severity-mild/5 p-6">
+              <ShieldCheck className="h-8 w-8 text-severity-mild" />
+              <p className="mt-3 text-sm font-semibold text-foreground">
                 Safe Guidance
               </p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Step-by-step instructions
               </p>
             </div>
-            <div className="rounded-xl border border-border bg-card p-4">
-              <Heart className="mx-auto h-7 w-7 text-severity-emergency" />
-              <p className="mt-2 text-xs font-medium text-foreground">
+            <div className="card-elevated flex flex-col items-center border-0 bg-gradient-to-b from-primary/20 to-primary/5 p-6">
+              <Heart className="h-8 w-8 text-primary" />
+              <p className="mt-3 text-sm font-semibold text-foreground">
                 Personalized
               </p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Based on your profile
               </p>
             </div>
-            <div className="rounded-xl border border-border bg-card p-4">
-              <Cross className="mx-auto h-7 w-7 text-severity-mild" />
-              <p className="mt-2 text-xs font-medium text-foreground">
+            <div className="card-elevated flex flex-col items-center border-0 bg-gradient-to-b from-severity-serious/20 to-severity-serious/5 p-6">
+              <Cross className="h-8 w-8 text-severity-serious" />
+              <p className="mt-3 text-sm font-semibold text-foreground">
                 Offline Ready
               </p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="mt-1 text-xs text-muted-foreground">
                 No internet needed
               </p>
             </div>
@@ -158,14 +156,13 @@ function FirstAidAppContent() {
 
           <Button
             onClick={() => setStep(1)}
-            size="lg"
-            className="mt-8 w-full gap-2 text-base"
+            className="btn-primary-lg mt-10 w-full gap-2"
           >
             {t('main.startButton')}
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-5 w-5" />
           </Button>
 
-          <p className="mt-6 text-xs text-muted-foreground">
+          <p className="mt-8 text-xs text-muted-foreground">
             {t('results.disclaimer')}
           </p>
         </div>
@@ -203,10 +200,7 @@ function FirstAidAppContent() {
 
   // Form wizard steps
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Main content */}
-      <div className="flex-1">
-        <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background">
           <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
             <div className="mx-auto max-w-2xl px-4 py-3">
               <div className="flex items-center justify-between">
@@ -242,9 +236,9 @@ function FirstAidAppContent() {
             </div>
           </header>
 
-          <div className="mx-auto max-w-2xl px-4 py-6">
-            <Card className="border-border shadow-sm">
-              <CardContent className="p-5 md:p-6">
+          <div className="mx-auto w-full max-w-3xl px-4 py-8">
+            <Card className="card-elevated border-0">
+              <CardContent className="p-6 md:p-8">
                 {step === 1 && (
                   <PatientProfileStep data={patient} onChange={setPatient} />
                 )}
@@ -260,24 +254,24 @@ function FirstAidAppContent() {
               </CardContent>
             </Card>
 
-            <div className="mt-6 flex items-center justify-between">
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <Button
                 variant="outline"
                 onClick={handleBack}
-                className="gap-2"
+                className="touch-lg gap-2 sm:w-auto"
               >
                 <ArrowLeft className="h-4 w-4" />
                 {step === 1 ? t('common.close') : t('common.back')}
               </Button>
 
-              <span className="text-sm text-muted-foreground">
-                {t('common.next')} {step} {t('common.of')} 4
+              <span className="text-center text-sm font-medium text-muted-foreground">
+                {t('common.next')} <span className="font-bold text-foreground">{step}</span> {t('common.of')} <span className="font-bold text-foreground">4</span>
               </span>
 
               <Button
                 onClick={handleNext}
                 disabled={!canProceed()}
-                className="gap-2"
+                className="btn-primary-lg sm:w-auto gap-2"
               >
                 {step === 4 ? t('results.title') : t('common.next')}
                 <ArrowRight className="h-4 w-4" />
@@ -285,15 +279,6 @@ function FirstAidAppContent() {
             </div>
           </div>
         </main>
-      </div>
-
-      {/* Sidebar with Chat */}
-      <div className="hidden w-96 border-l border-border bg-background/50 lg:flex flex-col">
-        <div className="flex-1 overflow-hidden">
-          <AIChatAssistant />
-        </div>
-      </div>
-    </div>
   )
 }
 

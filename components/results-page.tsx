@@ -28,9 +28,11 @@ import {
   Stethoscope,
   Timer,
   Image as ImageIcon,
+  Volume2,
 } from "lucide-react"
 import Image from "next/image"
 import { AnimatedInjuryIcon } from "@/components/animated-injury-icons"
+import { SpeechControls } from "@/components/speech-controls"
 import {
   HeadacheAnimation,
   FeverAnimation,
@@ -92,13 +94,13 @@ export function ResultsPage({
   const hospitals = location.city ? HOSPITALS[location.city] || [] : []
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 pb-8">
       {/* Severity Banner */}
       <div
         className={cn(
-          "rounded-2xl border-2 p-5",
+          "rounded-3xl border-0 p-8 shadow-xl",
           severityInfo.bgColor,
-          severityInfo.borderColor
+          "shadow-primary/20"
         )}
       >
         <div className="flex items-center gap-3">
@@ -329,6 +331,68 @@ export function ResultsPage({
               </p>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Speech Controls and Symptom Visual */}
+      <div className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10 p-6">
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Speech Controls */}
+          <div>
+            <h3 className="flex items-center gap-2 text-sm font-bold text-foreground mb-4">
+              <Volume2 className="h-5 w-5 text-primary" />
+              Accessibility Controls
+            </h3>
+            <SpeechControls text={guidance.materials} language="en" />
+          </div>
+
+          {/* Symptom Visualization */}
+          <div className="flex flex-col items-center justify-center">
+            <h3 className="text-sm font-bold text-foreground mb-4">Your Symptoms</h3>
+            {symptoms.painLevel && (
+              <div className="relative w-full h-48">
+                <Image
+                  src="/images/symptom-pain.jpg"
+                  alt="Pain symptom visualization"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            )}
+            {symptoms.bleeding && (
+              <div className="relative w-full h-48">
+                <Image
+                  src="/images/symptom-bleeding.jpg"
+                  alt="Bleeding symptom visualization"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            )}
+            {symptoms.swelling && (
+              <div className="relative w-full h-48">
+                <Image
+                  src="/images/symptom-swelling.jpg"
+                  alt="Swelling symptom visualization"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            )}
+            {!symptoms.conscious && (
+              <div className="relative w-full h-48">
+                <Image
+                  src="/images/symptom-dizziness.jpg"
+                  alt="Unconsciousness symptom visualization"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            )}
+            {!symptoms.painLevel && !symptoms.bleeding && !symptoms.swelling && symptoms.conscious && (
+              <p className="text-center text-muted-foreground text-sm">No critical symptoms reported</p>
+            )}
+          </div>
         </div>
       </div>
 
